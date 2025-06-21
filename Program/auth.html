@@ -119,6 +119,12 @@
       }
     });
 
+    // Простая переадресация для демонстрации входа сотрудника
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      window.location.href = 'profile-employee.html';
+    });
+
     // TODO: добавить обработку отправки форм (AJAX) согласно условиям ВКР
   </script>
 </body>
