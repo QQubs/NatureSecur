@@ -119,6 +119,14 @@
       }
     });
 
+    // Простая переадресация для демонстрации входа сотрудника
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Сохраняем имя сотрудника для демонстрации отображения в профиле
+      localStorage.setItem('employeeName', 'Иван Иванов');
+      window.location.href = 'profile-employee.html';
+    });
+
     // TODO: добавить обработку отправки форм (AJAX) согласно условиям ВКР
   </script>
 </body>
