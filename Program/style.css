@@ -186,3 +186,56 @@
         padding: 8px 16px;
       }
     }
+/* Personal account styles */
+.profile-container {
+  padding: 150px 40px 40px;
+  font-family: "Roboto", sans-serif;
+}
+.profile-section {
+  margin-bottom: 50px;
+}
+.requests-table, .orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+.requests-table th, .orders-table th,
+.requests-table td, .orders-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+.requests-table th, .orders-table th {
+  background-color: #f2f2f2;
+}
+.btn {
+  background-color: #08641f;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 14px;
+}
+.btn:hover { background-color: #0f4b1e; }
+.file-label {
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 5px;
+}
+.file-label input[type="file"] {
+  display: none;
+}
+.chat-area {
+  display: none;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+.chat-area textarea {
+  width: 100%;
+  height: 60px;
+  margin-top: 5px;
+  resize: vertical;
+}
