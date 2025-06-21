@@ -1,0 +1,125 @@
+<!-- Файл: auth.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Авторизация / Регистрация</title>
+  <link rel="stylesheet" href="auth.css">
+</head>
+<header>
+    <a href="index.html" class="logo">
+      <img src="LogoF3.png" >
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#about">О компании</a></li>
+        <li><a href="#contacts">Контакты</a></li>
+        <li><a href="auth.html" class="btn-auth">Войти</a></li>
+      </ul>
+    </nav>
+  </header>
+<body>
+  <div class="container">
+    <div class="auth-box">
+      <!-- Меню переключения между формами -->
+      <div class="toggle-menu">
+        <button id="loginToggle" class="active">Авторизация</button>
+        <button id="registerToggle">Регистрация</button>
+      </div>
+      <!-- Форма авторизации -->
+      <form id="loginForm" class="active" novalidate>
+        <div class="form-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" name="email" required placeholder="example@mail.ru">
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Пароль</label>
+          <input type="password" id="loginPassword" name="password" required minlength="8" placeholder="Не менее 8 символов">
+        </div>
+        <button type="submit" class="btn-submit">Войти</button>
+      </form>
+      <!-- Форма регистрации -->
+      <form id="registerForm" novalidate>
+        <div class="form-group">
+          <label for="regType">Тип пользователя</label>
+          <select id="regType" name="userType" required>
+            <option value="physical">Физическое лицо</option>
+            <option value="legal">Юридическое лицо</option>
+          </select>
+        </div>
+        <div class="form-group" id="fioGroup">
+          <label for="regFio">ФИО</label>
+          <input type="text" id="regFio" name="fio" placeholder="Иванов Иван Иванович" required>
+        </div>
+        <div class="form-group" id="companyGroup" style="display: none;">
+          <label for="regCompany">Название организации</label>
+          <input type="text" id="regCompany" name="companyName" placeholder="ООО «Природоохранный центр»">
+        </div>
+        <div class="form-group">
+          <label for="regPhone">Контактный телефон</label>
+          <input type="tel" id="regPhone" name="phone" pattern="\+?\d{10,15}" required placeholder="+7XXXXXXXXXX">
+        </div>
+        <div class="form-group">
+          <label for="regEmail">Email</label>
+          <input type="email" id="regEmail" name="email" required placeholder="example@mail.ru">
+        </div>
+        <div class="form-group">
+          <label for="regPassword">Пароль</label>
+          <input type="password" id="regPassword" name="password" required minlength="8" placeholder="Не менее 8 символов">
+        </div>
+        <button type="submit" class="btn-submit">Зарегистрироваться</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    // Переключение между формами
+    const loginToggle = document.getElementById('loginToggle');
+    const registerToggle = document.getElementById('registerToggle');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+
+    loginToggle.addEventListener('click', () => {
+      loginToggle.classList.add('active');
+      registerToggle.classList.remove('active');
+      loginForm.classList.add('active');
+      registerForm.classList.remove('active');
+    });
+
+    registerToggle.addEventListener('click', () => {
+      registerToggle.classList.add('active');
+      loginToggle.classList.remove('active');
+      registerForm.classList.add('active');
+      loginForm.classList.remove('active');
+    });
+
+    // Смена полей при выборе типа пользователя
+    const regType = document.getElementById('regType');
+    const fioGroup = document.getElementById('fioGroup');
+    const companyGroup = document.getElementById('companyGroup');
+
+    regType.addEventListener('change', (e) => {
+      if (e.target.value === 'physical') {
+        fioGroup.style.display = 'block';
+        fioGroup.querySelector('input').required = true;
+        companyGroup.style.display = 'none';
+        companyGroup.querySelector('input').required = false;
+      } else {
+        companyGroup.style.display = 'block';
+        companyGroup.querySelector('input').required = true;
+        fioGroup.style.display = 'none';
+        fioGroup.querySelector('input').required = false;
+      }
+    });
+
+    // TODO: добавить обработку отправки форм (AJAX) согласно условиям ВКР
+  </script>
+</body>
+</html>
