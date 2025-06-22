@@ -32,15 +32,17 @@
   </nav>
   <section class="profile-section" id="orders" style="display:none;">
     <button id="new-request-btn" class="btn" style="margin-bottom:10px;">Подать заявку</button>
-    <form id="new-request-form" style="display:none; margin-bottom:20px;">
-      <label for="work-type">Тип работ:</label>
-      <select id="work-type">
-        <option>Экологический аудит</option>
-        <option>Водный аудит</option>
-        <option>Выбросы в атмосферу</option>
-      </select>
-      <button type="submit" class="btn">Отправить</button>
-    </form>
+    <div id="request-overlay" class="overlay">
+      <form id="new-request-form" class="modal-form" style="margin-bottom:20px;">
+        <label for="work-type">Тип работ:</label>
+        <select id="work-type">
+          <option>Экологический аудит</option>
+          <option>Водный аудит</option>
+          <option>Выбросы в атмосферу</option>
+        </select>
+        <button type="submit" class="btn">Отправить</button>
+      </form>
+    </div>
     <div class="table-container">
     <table class="orders-table">
       <thead>
@@ -116,11 +118,15 @@ menuButtons.forEach(btn => {
 // показать первый раздел по умолчанию
 document.querySelector('.profile-menu button.active').click();
 
-// показать форму новой заявки
+// показать форму новой заявки в затемненном окне
 const newBtn = document.getElementById('new-request-btn');
-const form = document.getElementById('new-request-form');
+const overlay = document.getElementById('request-overlay');
 newBtn.addEventListener('click', () => {
-  form.style.display = form.style.display === 'block' ? 'none' : 'block';
+  overlay.style.display = 'flex';
+});
+
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) overlay.style.display = 'none';
 });
 // ограничение длины сообщений обрабатывается атрибутом maxlength
 </script>
