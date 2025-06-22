@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>Личный кабинет</title>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">
+      <img src="LogoF3.png" alt="NatureSecur">
+    </a>
+    <nav>
+      <ul>
+        <li><a href="index.html#services">Услуги</a></li>
+        <li><a href="index.html#about">О компании</a></li>
+        <li><a href="index.html#contacts">Контакты</a></li>
+        <li><a href="auth.html" class="btn-auth">Выйти</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="profile">
+    <h1>Личный кабинет</h1>
+    <section id="ordersSection">
+      <div class="orders-header">
+        <h2>Мои заказы</h2>
+        <button id="newOrderBtn" class="btn-apply">Подать заявку</button>
+      </div>
+      <div id="ordersList" class="orders-list"></div>
+    </section>
+  </main>
+
+  <div id="orderForm" class="modal hidden">
+    <form id="newOrderForm" class="modal-content">
+      <h3>Новая заявка</h3>
+      <label for="workType">Тип работы</label>
+      <select id="workType" required>
+        <option value="Экологический аудит">Экологический аудит</option>
+        <option value="Мониторинг">Мониторинг</option>
+        <option value="Экологическая отчетность">Экологическая отчетность</option>
+      </select>
+      <div class="modal-buttons">
+        <button type="submit" class="btn-submit">Отправить</button>
+        <button type="button" id="cancelOrder" class="btn-cancel">Отмена</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="orderDetails" class="modal hidden">
+    <div class="modal-content details">
+      <div id="orderInfo"></div>
+      <h3>Чат</h3>
+      <div id="chatMessages" class="chat"></div>
+      <form id="chatForm" class="chat-form">
+        <textarea id="chatInput" maxlength="500" placeholder="Введите сообщение..." required></textarea>
+        <button type="submit" class="btn-submit">Отправить</button>
+      </form>
+      <a id="downloadReport" href="#" class="btn-download" download>Скачать отчет</a>
+      <button type="button" id="closeDetails" class="btn-cancel">Закрыть</button>
+    </div>
+  </div>
+
+<script>
+const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+let currentOrder = null;
+
+function saveOrders() {
+  localStorage.setItem('orders', JSON.stringify(orders));
+}
+
+function renderOrders() {
+  const list = document.getElementById('ordersList');
+  list.innerHTML = '';
+  if (orders.length === 0) {
+    list.textContent = 'У вас нет заказов';
+    return;
+  }
+  orders.forEach(order => {
+    const card = document.createElement('div');
+    card.className = 'order-card';
+    card.innerHTML = `<span class="order-id">#${order.id}</span>
+      <span class="order-type">${order.type}</span>
+      <span class="order-status">${order.status}</span>
+      <button data-id="${order.id}" class="open-details">Открыть</button>`;
+    list.appendChild(card);
+  });
+}
+
+function openOrderForm() {
+  document.getElementById('orderForm').classList.remove('hidden');
+}
+
+function closeOrderForm() {
+  document.getElementById('orderForm').classList.add('hidden');
+  document.getElementById('newOrderForm').reset();
+}
+
+function openDetails(id) {
+  currentOrder = orders.find(o => o.id == id);
+  if (!currentOrder) return;
+  document.getElementById('orderInfo').innerHTML = `<p>Заказ #${currentOrder.id}</p><p>Тип: ${currentOrder.type}</p><p>Статус: ${currentOrder.status}</p>`;
+  document.getElementById('downloadReport').href = currentOrder.report || '#';
+  renderChat();
+  document.getElementById('orderDetails').classList.remove('hidden');
+}
+
+function closeDetails() {
+  document.getElementById('orderDetails').classList.add('hidden');
+  currentOrder = null;
+}
+
+function renderChat() {
+  const chat = document.getElementById('chatMessages');
+  chat.innerHTML = '';
+  (currentOrder.messages || []).forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'chat-message';
+    div.textContent = m.text;
+    chat.appendChild(div);
+  });
+}
+
+document.getElementById('newOrderBtn').addEventListener('click', openOrderForm);
+document.getElementById('cancelOrder').addEventListener('click', closeOrderForm);
+document.getElementById('closeDetails').addEventListener('click', closeDetails);
+
+document.getElementById('newOrderForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const type = document.getElementById('workType').value;
+  const order = {
+    id: Date.now(),
+    type,
+    status: 'На рассмотрении',
+    messages: [],
+    report: 'sample-report.pdf'
+  };
+  orders.push(order);
+  saveOrders();
+  renderOrders();
+  closeOrderForm();
+});
+
+document.getElementById('ordersList').addEventListener('click', e => {
+  if (e.target.classList.contains('open-details')) {
+    openDetails(e.target.getAttribute('data-id'));
+  }
+});
+
+document.getElementById('chatForm').addEventListener('submit', e => {
+  e.preventDefault();
+  if (!currentOrder) return;
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  currentOrder.messages.push({text});
+  input.value = '';
+  saveOrders();
+  renderChat();
+});
+
+renderOrders();
+</script>
+</body>
+</html>
