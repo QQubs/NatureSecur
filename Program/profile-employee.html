@@ -26,7 +26,10 @@
   </nav>
 </header>
 <main class="profile-container">
-  <h1>Личный кабинет сотрудника <br> Добро пожаловать, <span id="employee-name"> Иван Иванов</span></h1> 
+  <div class="profile-heading">
+    <h1>Личный кабинет сотрудника <br> Добро пожаловать, <span id="employee-name"> Иван Иванов</span></h1>
+    <button id="notifications-btn" class="notify-btn"><img src="bell.svg" alt="Уведомления"></button>
+  </div>
     <nav class="profile-menu">
     <button data-target="personal" class="profile-highlight active">Мой профиль</button>
     <button data-target="requests">Заявки</button>
@@ -150,6 +153,14 @@
     <p><strong>Email:</strong> ivan.ivanov@example.com</p>
     <p><strong>Телефон:</strong> +7 900 123-45-67</p>
   </section>
+  <div id="notifications-overlay" class="overlay">
+    <div class="modal-form">
+      <h2>Уведомления</h2>
+      <ul id="notifications-list">
+        <li>Уведомлений нет</li>
+      </ul>
+    </div>
+  </div>
 </main>
 <script>
 // показать/скрыть чат
@@ -187,6 +198,15 @@ menuButtons.forEach(btn => {
 });
 // показать первый раздел по умолчанию
 document.querySelector('.profile-menu button.active').click();
+
+const notifBtn = document.getElementById('notifications-btn');
+const notifOverlay = document.getElementById('notifications-overlay');
+notifBtn.addEventListener('click', () => {
+  notifOverlay.style.display = 'flex';
+});
+notifOverlay.addEventListener('click', (e) => {
+  if (e.target === notifOverlay) notifOverlay.style.display = 'none';
+});
 </script>
 </body>
 </html>

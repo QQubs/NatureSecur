@@ -26,7 +26,10 @@
   </nav>
 </header>
 <main class="profile-container">
-  <h1>Личный кабинет клиента <br> Добро пожаловать, <span id="client-name"> Иван Иванов</span></h1>
+  <div class="profile-heading">
+    <h1>Личный кабинет клиента <br> Добро пожаловать, <span id="client-name"> Иван Иванов</span></h1>
+    <button id="notifications-btn" class="notify-btn"><img src="bell.svg" alt="Уведомления"></button>
+  </div>
   <nav class="profile-menu">
     <button data-target="personal" class="profile-highlight active">Мой профиль</button>
     <button data-target="orders">Мои заказы</button>
@@ -98,6 +101,14 @@
     <p><strong>Email:</strong> ivan.petrov@example.com</p>
     <p><strong>Телефон:</strong> +7 987 654-32-10</p>
   </section>
+  <div id="notifications-overlay" class="overlay">
+    <div class="modal-form">
+      <h2>Уведомления</h2>
+      <ul id="notifications-list">
+        <li>Уведомлений нет</li>
+      </ul>
+    </div>
+  </div>
 </main>
 <script>
 // показать/скрыть чат
@@ -134,6 +145,15 @@ newBtn.addEventListener('click', () => {
 
 overlay.addEventListener('click', (e) => {
   if (e.target === overlay) overlay.style.display = 'none';
+});
+
+const notifBtn = document.getElementById('notifications-btn');
+const notifOverlay = document.getElementById('notifications-overlay');
+notifBtn.addEventListener('click', () => {
+  notifOverlay.style.display = 'flex';
+});
+notifOverlay.addEventListener('click', (e) => {
+  if (e.target === notifOverlay) notifOverlay.style.display = 'none';
 });
 // ограничение длины сообщений обрабатывается атрибутом maxlength
 </script>
