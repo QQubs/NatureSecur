@@ -3,7 +3,9 @@ class ClientModel {
     protected static function getDB() {
         static $db = null;
         if ($db === null) {
-            $dsn = getenv('DB_DSN') ?: 'pgsql:host=localhost;port=5432;dbname=NatureSecur;charset=utf8';
+            // Default DSN for local PostgreSQL. Charset parameter is omitted
+            // because the pgsql driver uses the database encoding.
+            $dsn = getenv('DB_DSN') ?: 'pgsql:host=localhost;port=5432;dbname=NatureSecur';
             $user = getenv('DB_USER') ?: 'postgres';
             $pass = getenv('DB_PASS') ?: 'ristal2222';
             $db = new PDO($dsn, $user, $pass);
