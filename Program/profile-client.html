@@ -29,6 +29,7 @@
   <h1>Личный кабинет клиента <span id="client-name">Иван Петров</span></h1>
   <nav class="profile-menu">
     <button data-target="orders" class="active">Мои заказы</button>
+    <button data-target="personal">Личные данные</button>
   </nav>
   <section class="profile-section" id="orders" style="display:none;">
     <button id="new-request-btn" class="btn" style="margin-bottom:10px;">Подать заявку</button>
@@ -90,6 +91,12 @@
       </tbody>
     </table>
     </div>
+  </section>
+  <section class="profile-section" id="personal" style="display:none;">
+    <h2>Личные данные</h2>
+    <p><strong>ФИО:</strong> Иван Петров</p>
+    <p><strong>Email:</strong> ivan.petrov@example.com</p>
+    <p><strong>Телефон:</strong> +7 987 654-32-10</p>
   </section>
 </main>
 <script>
