@@ -24,5 +24,19 @@ class OrderModel {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public static function getOrdersByEmployee($empId) {
+        $db = self::getDB();
+        $sql = "SELECT o.order_id, o.order_type, o.status,
+                       COALESCE(c.company_name, c.name) AS client_name
+                FROM orders o
+                JOIN clients c ON o.client_id = c.client_id
+                WHERE o.emp_id = :emp_id
+                ORDER BY o.order_id";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':emp_id', $empId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
