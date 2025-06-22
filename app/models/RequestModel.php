@@ -3,7 +3,8 @@ class RequestModel {
     protected static function getDB() {
         static $db = null;
         if ($db === null) {
-            $dsn = getenv('DB_DSN') ?: 'pgsql:host=localhost;port=5432;dbname=NatureSecur;charset=utf8';
+            // Use PostgreSQL connection; charset is inherited from the database
+            $dsn = getenv('DB_DSN') ?: 'pgsql:host=localhost;port=5432;dbname=NatureSecur';
             $user = getenv('DB_USER') ?: 'postgres';
             $pass = getenv('DB_PASS') ?: 'ristal2222';
             $db = new PDO($dsn, $user, $pass);

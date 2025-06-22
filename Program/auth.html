@@ -35,7 +35,7 @@
         <button id="registerToggle">Регистрация</button>
       </div>
       <!-- Форма авторизации -->
-      <form id="loginForm" class="active" novalidate>
+      <form id="loginForm" class="active" method="post" action="../public/index.php?action=login" novalidate>
         <div class="form-group">
           <label for="loginEmail">Email</label>
           <input type="email" id="loginEmail" name="email" required placeholder="example@mail.ru">
@@ -47,7 +47,7 @@
         <button type="submit" class="btn-submit">Войти</button>
       </form>
       <!-- Форма регистрации -->
-      <form id="registerForm" novalidate>
+      <form id="registerForm" method="post" action="../public/index.php?action=register" novalidate>
         <div class="form-group">
           <label for="regType">Тип пользователя</label>
           <select id="regType" name="userType" required>
@@ -119,13 +119,7 @@
       }
     });
 
-    // Простая переадресация для демонстрации входа сотрудника
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      window.location.href = 'profile-employee.html';
-    });
-
-    // TODO: добавить обработку отправки форм (AJAX) согласно условиям ВКР
+    // Простая обработка выбора типа пользователя
   </script>
 </body>
 </html>
