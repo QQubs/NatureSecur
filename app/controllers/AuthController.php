@@ -24,9 +24,9 @@ class AuthController {
     }
 
     public static function login() {
-        $email = trim($_POST['email'] ?? '');
+        $identifier = trim($_POST['identifier'] ?? '');
         $password = $_POST['password'] ?? '';
-        $clientId = ClientModel::authenticate($email, $password);
+        $clientId = ClientModel::authenticate($identifier, $password);
         if ($clientId) {
             session_start();
             $_SESSION['client_id'] = $clientId;
@@ -34,7 +34,7 @@ class AuthController {
             exit;
         }
 
-        $emp = EmployeeModel::authenticate($email, $password);
+        $emp = EmployeeModel::authenticate($identifier, $password);
         if ($emp) {
             session_start();
             $_SESSION['emp_id'] = $emp['emp_id'];
