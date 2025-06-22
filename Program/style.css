@@ -327,3 +327,20 @@
 #client-name{
   color: #059c42;
 }
+
+.profile-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notify-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.notify-btn img {
+  width: 24px;
+  height: 24px;
+}
