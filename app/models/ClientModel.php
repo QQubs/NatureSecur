@@ -38,5 +38,13 @@ class ClientModel {
         }
         return false;
     }
+
+    public static function getClientById($id) {
+        $db = self::getDB();
+        $stmt = $db->prepare("SELECT name, company_name, email, phone FROM clients WHERE client_id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>

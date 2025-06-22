@@ -29,7 +29,7 @@ class AuthController {
         if ($clientId) {
             session_start();
             $_SESSION['client_id'] = $clientId;
-            header('Location: profile-client.html');
+            header('Location: profile-client.php');
         } else {
             header('Location: ../Program/auth.html?error=invalid');
         }
