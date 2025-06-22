@@ -3,9 +3,9 @@ class RequestModel {
     protected static function getDB() {
         static $db = null;
         if ($db === null) {
-            $dsn = getenv('DB_DSN') ?: 'mysql:host=localhost;dbname=naturesecur;charset=utf8';
-            $user = getenv('DB_USER') ?: 'root';
-            $pass = getenv('DB_PASS') ?: '';
+            $dsn = getenv('DB_DSN') ?: 'pgsql:host=localhost;port=5432;dbname=NatureSecur;charset=utf8';
+            $user = getenv('DB_USER') ?: 'postgres';
+            $pass = getenv('DB_PASS') ?: 'ristal2222';
             $db = new PDO($dsn, $user, $pass);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
