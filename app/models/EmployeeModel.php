@@ -14,12 +14,12 @@ class EmployeeModel {
 
     public static function authenticate($email, $password) {
         $db = self::getDB();
-        $stmt = $db->prepare("SELECT emp_id, password FROM employees WHERE email = :email");
+        $stmt = $db->prepare("SELECT emp_id, role, password FROM employees WHERE email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $emp = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($emp && password_verify($password, $emp['password'])) {
-            return $emp['emp_id'];
+            return ['emp_id' => $emp['emp_id'], 'role' => $emp['role']];
         }
         return false;
     }

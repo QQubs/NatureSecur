@@ -34,11 +34,16 @@ class AuthController {
             exit;
         }
 
-        $empId = EmployeeModel::authenticate($email, $password);
-        if ($empId) {
+        $emp = EmployeeModel::authenticate($email, $password);
+        if ($emp) {
             session_start();
-            $_SESSION['emp_id'] = $empId;
-            header('Location: profile-employee.php');
+            $_SESSION['emp_id'] = $emp['emp_id'];
+            $_SESSION['role'] = $emp['role'];
+            if ($emp['role'] === 'администратор') {
+                header('Location: profile-admin.php');
+            } else {
+                header('Location: profile-employee.php');
+            }
             exit;
         }
 
