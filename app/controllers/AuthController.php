@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/ClientModel.php';
+require_once __DIR__ . '/../models/EmployeeModel.php';
 
 class AuthController {
     public static function register() {
@@ -30,9 +31,18 @@ class AuthController {
             session_start();
             $_SESSION['client_id'] = $clientId;
             header('Location: profile-client.php');
-        } else {
-            header('Location: ../Program/auth.html?error=invalid');
+            exit;
         }
+
+        $empId = EmployeeModel::authenticate($email, $password);
+        if ($empId) {
+            session_start();
+            $_SESSION['emp_id'] = $empId;
+            header('Location: profile-employee.php');
+            exit;
+        }
+
+        header('Location: ../Program/auth.html?error=invalid');
         exit;
     }
 }
