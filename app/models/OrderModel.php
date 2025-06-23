@@ -52,12 +52,32 @@ class OrderModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function getStatus($orderId) {
+        $db = self::getDB();
+        $stmt = $db->prepare("SELECT status FROM orders WHERE order_id = :order_id");
+        $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
     public static function updateStatus($orderId, $status) {
+        $current = self::getStatus($orderId);
+        if ($current === false) {
+            return false;
+        }
+        $allowed = ['принят', 'в работе', 'на проверке', 'завершен'];
+        $curIndex = array_search($current, $allowed, true);
+        $newIndex = array_search($status, $allowed, true);
+        if ($curIndex === false || $newIndex === false || $newIndex < $curIndex) {
+            return false;
+        }
+
         $db = self::getDB();
         $stmt = $db->prepare("UPDATE orders SET status = :status WHERE order_id = :order_id");
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
         $stmt->execute();
+        return true;
     }
 }
 ?>

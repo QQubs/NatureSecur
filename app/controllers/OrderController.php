@@ -51,7 +51,12 @@ class OrderController
             return;
         }
 
-        OrderModel::updateStatus($orderId, $status);
+        if (!OrderModel::updateStatus($orderId, $status)) {
+            http_response_code(400);
+            echo 'invalid';
+            return;
+        }
+
         echo 'ok';
     }
 }
