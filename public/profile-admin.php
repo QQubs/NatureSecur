@@ -23,6 +23,7 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../Program/favicon.ico">
   <title>Личный кабинет администратора</title>
   <link rel="stylesheet" href="../Program/style.css">
 </head>
