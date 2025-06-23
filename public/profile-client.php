@@ -35,7 +35,7 @@ $displayName = $client['name'] ?: $client['company_name'];
       <li><a href="#services">Услуги</a></li>
       <li><a href="#about">О компании</a></li>
       <li><a href="#contacts">Контакты</a></li>
-      <li><a href="../Program/auth.html" class="btn-auth">Выйти</a></li>
+      <li><a href="logout.php" class="btn-auth">Выйти</a></li>
     </ul>
   </nav>
 </header>
