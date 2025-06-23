@@ -98,6 +98,8 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
         <input type="hidden" name="request_id" id="create-request-id">
         <p><strong>Клиент:</strong> <span id="create-client-name"></span></p>
         <p><strong>Тип работ:</strong> <span id="create-order-type"></span></p>
+        <p><strong>Сотрудник:</strong> <span id="create-employee-name"></span></p>
+        <p><strong>Дата создания:</strong> <span id="create-date"></span></p>
         <label for="deadline">Дедлайн:</label>
         <input type="date" id="deadline" name="deadline" required>
         <button type="submit" class="btn">Создать заказ</button>
@@ -240,11 +242,16 @@ const createForm = document.getElementById('create-order-form');
 const createInput = document.getElementById('create-request-id');
 const createClient = document.getElementById('create-client-name');
 const createType = document.getElementById('create-order-type');
+const createEmployee = document.getElementById('create-employee-name');
+const createDate = document.getElementById('create-date');
+const employeeName = <?php echo json_encode($displayName); ?>;
 createButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     createInput.value = btn.dataset.id;
     createClient.textContent = btn.dataset.client;
     createType.textContent = btn.dataset.type;
+    createEmployee.textContent = employeeName;
+    createDate.textContent = new Date().toISOString().slice(0, 10);
     createOverlay.style.display = 'flex';
   });
 });
