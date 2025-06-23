@@ -25,6 +25,17 @@ class OrderModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function createOrder($clientId, $empId, $orderType, $deadline = null) {
+        $db = self::getDB();
+        $stmt = $db->prepare("INSERT INTO orders (client_id, emp_id, order_type, order_date, deadline, status) VALUES (:client_id, :emp_id, :order_type, CURRENT_DATE, :deadline, 'принят')");
+        $stmt->bindParam(':client_id', $clientId, PDO::PARAM_INT);
+        $stmt->bindParam(':emp_id', $empId, PDO::PARAM_INT);
+        $stmt->bindParam(':order_type', $orderType);
+        $stmt->bindParam(':deadline', $deadline);
+        $stmt->execute();
+        return $db->lastInsertId();
+    }
+
     public static function getOrdersByEmployee($empId) {
         $db = self::getDB();
         $sql = "SELECT o.order_id, o.order_type, o.status,

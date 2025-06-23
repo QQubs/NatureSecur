@@ -22,6 +22,21 @@ class RequestModel {
         return $db->lastInsertId();
     }
 
+public static function getRequestById($id) {
+        $db = self::getDB();
+        $stmt = $db->prepare("SELECT * FROM requests WHERE request_id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function deleteRequest($id) {
+        $db = self::getDB();
+        $stmt = $db->prepare("DELETE FROM requests WHERE request_id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
     public static function getAllRequests() {
         $db = self::getDB();
         $sql = "SELECT r.request_id, r.request_date, r.order_type,

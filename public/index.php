@@ -14,6 +14,14 @@ switch ($action) {
         require_once __DIR__ . '/../app/controllers/RequestController.php';
         RequestController::create();
         break;
+    case 'decline_request':
+        require_once __DIR__ . '/../app/controllers/RequestController.php';
+        RequestController::decline();
+        break;
+    case 'create_order':
+        require_once __DIR__ . '/../app/controllers/RequestController.php';
+        RequestController::createOrder();
+        break;
     default:
         header('Location: ../Program/index.html');
         break;

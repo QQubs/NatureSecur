@@ -52,6 +52,7 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
   </nav>
   <section class="profile-section" id="requests" style="display:none;">
     <h2>Заявки</h2>
+    <div id="message"></div>
     <div class="table-container">
     <table class="requests-table">
       <thead>
@@ -83,6 +84,17 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
       </tbody>
     </table>
     </div>
+    <div id="decline-overlay" class="overlay">
+      <form id="decline-form" class="modal-form" action="index.php?action=decline_request" method="post">
+        <input type="hidden" name="request_id" id="decline-request-id">
+        <label for="decline-reason">Причина отклонения:</label>
+        <textarea id="decline-reason" name="reason" required></textarea>
+        <button type="submit" class="btn">Точно отклонить</button>
+      </form>
+    </div>
+    <form id="create-order-form" action="index.php?action=create_order" method="post" style="display:none;">
+      <input type="hidden" name="request_id" id="create-request-id">
+    </form>
   </section>
 
   <section class="profile-section" id="orders" style="display:none;">
@@ -194,6 +206,45 @@ notifBtn.addEventListener('click', () => {
 notifOverlay.addEventListener('click', (e) => {
   if (e.target === notifOverlay) notifOverlay.style.display = 'none';
 });
+
+// обработка отклонения заявки
+const declineButtons = document.querySelectorAll('.decline-btn');
+const declineOverlay = document.getElementById('decline-overlay');
+const declineInput = document.getElementById('decline-request-id');
+declineButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    declineInput.value = btn.dataset.id;
+    declineOverlay.style.display = 'flex';
+  });
+});
+declineOverlay.addEventListener('click', (e) => {
+  if (e.target === declineOverlay) declineOverlay.style.display = 'none';
+});
+
+// создание заказа из заявки
+const createButtons = document.querySelectorAll('.create-order-btn');
+const createForm = document.getElementById('create-order-form');
+const createInput = document.getElementById('create-request-id');
+createButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    createInput.value = btn.dataset.id;
+    createForm.submit();
+  });
+});
+
+// сообщения об операциях
+const params = new URLSearchParams(window.location.search);
+const msgBox = document.getElementById('message');
+if (params.get('success') === 'declined') {
+  msgBox.textContent = 'Заявка отклонена';
+  msgBox.style.color = 'green';
+} else if (params.get('success') === 'created') {
+  msgBox.textContent = 'Заказ успешно создан';
+  msgBox.style.color = 'green';
+} else if (params.get('error')) {
+  msgBox.textContent = 'Ошибка выполнения операции';
+  msgBox.style.color = 'red';
+}
 </script>
 </body>
 </html>
