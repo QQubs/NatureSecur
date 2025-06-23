@@ -1,3 +1,19 @@
+<?php
+session_start();
+$profileLink = 'auth.html';
+$profileText = 'Войти';
+if (isset($_SESSION['client_id'])) {
+    $profileLink = '../public/profile-client.php';
+    $profileText = 'Личный кабинет';
+} elseif (isset($_SESSION['emp_id'])) {
+    if (($_SESSION['role'] ?? '') === 'администратор') {
+        $profileLink = '../public/profile-admin.php';
+    } else {
+        $profileLink = '../public/profile-employee.php';
+    }
+    $profileText = 'Личный кабинет';
+}
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -22,7 +38,7 @@
         <li><a href="#services">Услуги</a></li>
         <li><a href="#about">О компании</a></li>
         <li><a href="#contacts">Контакты</a></li>
-        <li><a href="auth.html" class="btn-auth">Войти</a></li>
+        <li><a href="<?php echo htmlspecialchars($profileLink); ?>" class="btn-auth"><?php echo htmlspecialchars($profileText); ?></a></li>
       </ul>
     </nav>
   </header>
