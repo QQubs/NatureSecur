@@ -175,6 +175,40 @@ notifBtn.addEventListener('click', () => {
 notifOverlay.addEventListener('click', (e) => {
   if (e.target === notifOverlay) notifOverlay.style.display = 'none';
 });
+
+// загрузка сообщений из localStorage
+document.querySelectorAll('.order-row').forEach(row => {
+  const id = row.querySelector('td').textContent.trim();
+  row.dataset.orderId = id;
+  const key = 'chat-' + id;
+  const messages = JSON.parse(localStorage.getItem(key) || '[]');
+  const msgBox = row.querySelector('.messages');
+  messages.forEach(m => {
+    const p = document.createElement('p');
+    p.innerHTML = '<strong>' + m.sender + ':</strong> ' + m.text;
+    msgBox.appendChild(p);
+  });
+});
+
+// отправка сообщения
+document.querySelectorAll('.send-message').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const area = btn.closest('.chat-area');
+    const textArea = area.querySelector('textarea');
+    const text = textArea.value.trim();
+    if (!text) return;
+    const row = btn.closest('.order-row');
+    const id = row.dataset.orderId;
+    const p = document.createElement('p');
+    p.innerHTML = '<strong>Вы:</strong> ' + text;
+    area.querySelector('.messages').appendChild(p);
+    const key = 'chat-' + id;
+    const stored = JSON.parse(localStorage.getItem(key) || '[]');
+    stored.push({sender:'Вы', text});
+    localStorage.setItem(key, JSON.stringify(stored));
+    textArea.value = '';
+  });
+});
 // отображение сообщения об успешном запросе
 const params = new URLSearchParams(window.location.search);
 const msgBox = document.getElementById('message');
