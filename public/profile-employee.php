@@ -28,22 +28,22 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
 </head>
 <body>
 <header>
-  <a href="index.html" class="logo">
-    <img src="LogoF3.png" alt="NatureSecur logo">
+  <a href="../Program/index.html" class="logo">
+    <img src="../Program/LogoF3.png" alt="NatureSecur logo">
   </a>
   <nav>
     <ul>
       <li><a href="#services">Услуги</a></li>
       <li><a href="#about">О компании</a></li>
       <li><a href="#contacts">Контакты</a></li>
-      <li><a href="auth.html" class="btn-auth">Выйти</a></li>
+      <li><a href="../Program/auth.html" class="btn-auth">Выйти</a></li>
     </ul>
   </nav>
 </header>
 <main class="profile-container">
   <div class="profile-heading">
     <h1>Личный кабинет сотрудника <br> Добро пожаловать, <span id="employee-name"><?php echo htmlspecialchars($displayName); ?></span></h1>
-    <button id="notifications-btn" class="notify-btn"><img src="bell.svg" alt="Уведомления"></button>
+    <button id="notifications-btn" class="notify-btn"><img src="../Program/bell.svg" alt="Уведомления"></button>
   </div>
   <nav class="profile-menu">
     <button data-target="personal" class="profile-highlight active">Мой профиль</button>
