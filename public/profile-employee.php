@@ -75,7 +75,7 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
           <td><?php echo htmlspecialchars($req['request_date']); ?></td>
           <td>
             <button class="btn decline-btn" data-id="<?php echo $req['request_id']; ?>">Отклонить</button>
-            <button class="btn create-order-btn" data-id="<?php echo $req['request_id']; ?>">Создать заказ</button>
+            <button class="btn create-order-btn" data-id="<?php echo $req['request_id']; ?>" data-client="<?php echo htmlspecialchars($req['client_name']); ?>" data-type="<?php echo htmlspecialchars($req['order_type']); ?>">Создать заказ</button>
           </td>
         </tr>
         <?php endforeach; ?>
@@ -93,9 +93,16 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
         <button type="submit" class="btn">Точно отклонить</button>
       </form>
     </div>
-    <form id="create-order-form" action="index.php?action=create_order" method="post" style="display:none;">
-      <input type="hidden" name="request_id" id="create-request-id">
-    </form>
+    <div id="create-order-overlay" class="overlay">
+      <form id="create-order-form" class="modal-form" action="index.php?action=create_order" method="post">
+        <input type="hidden" name="request_id" id="create-request-id">
+        <p><strong>Клиент:</strong> <span id="create-client-name"></span></p>
+        <p><strong>Тип работ:</strong> <span id="create-order-type"></span></p>
+        <label for="deadline">Дедлайн:</label>
+        <input type="date" id="deadline" name="deadline" required>
+        <button type="submit" class="btn">Создать заказ</button>
+      </form>
+    </div>
   </section>
 
   <section class="profile-section" id="orders" style="display:none;">
@@ -107,6 +114,8 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
           <th>ID</th>
           <th>Клиент</th>
           <th>Тип работ</th>
+          <th>Дата</th>
+          <th>Дедлайн</th>
           <th>Статус</th>
           <th>Действия</th>
         </tr>
@@ -118,6 +127,8 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
           <td><?php echo htmlspecialchars($order['order_id']); ?></td>
           <td><?php echo htmlspecialchars($order['client_name']); ?></td>
           <td><?php echo htmlspecialchars($order['order_type']); ?></td>
+          <td><?php echo htmlspecialchars($order['order_date']); ?></td>
+          <td><?php echo htmlspecialchars($order['deadline']); ?></td>
           <td>
             <select>
               <option<?php if ($order['status'] === 'принят') echo ' selected'; ?>>Принят</option>
@@ -141,7 +152,7 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
         </tr>
         <?php endforeach; ?>
       <?php else: ?>
-        <tr><td colspan="5">Заказов нет</td></tr>
+        <tr><td colspan="7">Заказов нет</td></tr>
       <?php endif; ?>
       </tbody>
     </table>
@@ -224,13 +235,21 @@ declineOverlay.addEventListener('click', (e) => {
 
 // создание заказа из заявки
 const createButtons = document.querySelectorAll('.create-order-btn');
+const createOverlay = document.getElementById('create-order-overlay');
 const createForm = document.getElementById('create-order-form');
 const createInput = document.getElementById('create-request-id');
+const createClient = document.getElementById('create-client-name');
+const createType = document.getElementById('create-order-type');
 createButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     createInput.value = btn.dataset.id;
-    createForm.submit();
+    createClient.textContent = btn.dataset.client;
+    createType.textContent = btn.dataset.type;
+    createOverlay.style.display = 'flex';
   });
+});
+createOverlay.addEventListener('click', (e) => {
+  if (e.target === createOverlay) createOverlay.style.display = 'none';
 });
 
 // сообщения об операциях

@@ -67,7 +67,10 @@ $displayName = $client['name'] ?: $client['company_name'];
       <thead>
         <tr>
           <th>ID</th>
+          <th>Сотрудник</th>
           <th>Тип работ</th>
+          <th>Дата</th>
+          <th>Дедлайн</th>
           <th>Статус</th>
           <th>Отчет</th>
           <th>Действия</th>
@@ -78,7 +81,10 @@ $displayName = $client['name'] ?: $client['company_name'];
         <?php foreach ($orders as $order): ?>
         <tr class="order-row">
           <td><?php echo htmlspecialchars($order['order_id']); ?></td>
+          <td><?php echo htmlspecialchars($order['employee_name']); ?></td>
           <td><?php echo htmlspecialchars($order['order_type']); ?></td>
+          <td><?php echo htmlspecialchars($order['order_date']); ?></td>
+          <td><?php echo htmlspecialchars($order['deadline']); ?></td>
           <td><?php echo htmlspecialchars($order['status']); ?></td>
           <td>
             <?php if (!empty($order['file_path'])): ?>
@@ -98,7 +104,7 @@ $displayName = $client['name'] ?: $client['company_name'];
         </tr>
         <?php endforeach; ?>
       <?php else: ?>
-        <tr><td colspan="5">Заказов нет</td></tr>
+        <tr><td colspan="8">Заказов нет</td></tr>
       <?php endif; ?>
       </tbody>
     </table>

@@ -14,9 +14,11 @@ class OrderModel {
 
     public static function getOrdersByClient($clientId) {
         $db = self::getDB();
-        $sql = "SELECT o.order_id, o.order_type, o.status,
+        $sql = "SELECT o.order_id, o.order_type, o.order_date, o.deadline, o.status,
+                       CONCAT(e.first_name, ' ', e.second_name) AS employee_name,
                        (SELECT file_path FROM reports r WHERE r.order_id = o.order_id ORDER BY version DESC LIMIT 1) AS file_path
                 FROM orders o
+                LEFT JOIN employees e ON o.emp_id = e.emp_id
                 WHERE o.client_id = :client_id
                 ORDER BY o.order_id";
         $stmt = $db->prepare($sql);
@@ -38,7 +40,7 @@ class OrderModel {
 
     public static function getOrdersByEmployee($empId) {
         $db = self::getDB();
-        $sql = "SELECT o.order_id, o.order_type, o.status,
+        $sql = "SELECT o.order_id, o.order_type, o.order_date, o.deadline, o.status,
                        COALESCE(NULLIF(c.company_name, ''), c.name) AS client_name
                 FROM orders o
                 JOIN clients c ON o.client_id = c.client_id
@@ -51,3 +53,4 @@ class OrderModel {
     }
 }
 ?>
+
