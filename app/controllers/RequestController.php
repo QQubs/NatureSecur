@@ -49,8 +49,13 @@ class RequestController
         $client = ClientModel::getClientById($req['client_id']);
         if ($client && !empty($client['email'])) {
             $subject = 'Заявка отклонена';
-            $message = 'Ваша заявка №' . $requestId . ' отклонена. Причина: ' . $reason;
-            @mail($client['email'], $subject, $message);
+            $message = 'Ваша заявка №' . $requestId . " отклонена.\nПричина: " . $reason;
+            $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+            $headers = [
+                'From: no-reply@naturesecur.local',
+                'Content-Type: text/plain; charset=UTF-8'
+            ];
+            @mail($client['email'], $encodedSubject, $message, implode("\r\n", $headers));
         }
 
         RequestModel::deleteRequest($requestId);
