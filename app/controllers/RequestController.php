@@ -67,6 +67,7 @@ class RequestController
         }
 
         $requestId = intval($_POST['request_id'] ?? 0);
+        $deadline = trim($_POST['deadline'] ?? '');
         if ($requestId <= 0) {
             header('Location: profile-employee.php?error=invalid');
             exit;
@@ -79,7 +80,8 @@ class RequestController
         }
 
         require_once __DIR__ . '/../models/OrderModel.php';
-        $orderId = OrderModel::createOrder($req['client_id'], $_SESSION['emp_id'], $req['order_type']);
+        $dl = $deadline !== '' ? $deadline : null;
+        $orderId = OrderModel::createOrder($req['client_id'], $_SESSION['emp_id'], $req['order_type'], $dl);
 
         require_once __DIR__ . '/../models/ClientModel.php';
         $client = ClientModel::getClientById($req['client_id']);
