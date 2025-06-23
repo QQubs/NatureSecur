@@ -26,7 +26,7 @@ $displayName = $client['name'] ?: $client['company_name'];
 </head>
 <body>
 <header>
-  <a href="index.html" class="logo">
+  <a href="../Program/index.html" class="logo">
     <img src="../Program/LogoF3.png" alt="NatureSecur logo">
   </a>
   <nav>
@@ -34,7 +34,7 @@ $displayName = $client['name'] ?: $client['company_name'];
       <li><a href="#services">Услуги</a></li>
       <li><a href="#about">О компании</a></li>
       <li><a href="#contacts">Контакты</a></li>
-      <li><a href="auth.html" class="btn-auth">Выйти</a></li>
+      <li><a href="../Program/auth.html" class="btn-auth">Выйти</a></li>
     </ul>
   </nav>
 </header>
