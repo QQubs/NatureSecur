@@ -90,16 +90,16 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
         <input type="hidden" name="request_id" id="decline-request-id">
         <label for="decline-reason">Причина отклонения:</label>
         <textarea id="decline-reason" name="reason" required></textarea>
-        <button type="submit" class="btn">Точно отклонить</button>
+        <button type="submit" class="btn">Подтвердить</button>
       </form>
     </div>
     <div id="create-order-overlay" class="overlay">
       <form id="create-order-form" class="modal-form" action="index.php?action=create_order" method="post">
         <input type="hidden" name="request_id" id="create-request-id">
-        <p><strong>Клиент:</strong> <span id="create-client-name"></span></p>
-        <p><strong>Тип работ:</strong> <span id="create-order-type"></span></p>
-        <p><strong>Сотрудник:</strong> <span id="create-employee-name"></span></p>
-        <p><strong>Дата создания:</strong> <span id="create-date"></span></p>
+        <p><strong>Клиент:</strong> <span id="create-client-name"></span></p><br>
+        <p><strong>Тип работ:</strong> <span id="create-order-type"></span></p><br>
+        <p><strong>Сотрудник:</strong> <span id="create-employee-name"></span></p><br>
+        <p><strong>Дата создания:</strong> <span id="create-date"></span></p><br>
         <label for="deadline">Дедлайн:</label>
         <input type="date" id="deadline" name="deadline" required>
         <button type="submit" class="btn">Создать заказ</button>
