@@ -168,7 +168,7 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
   </section>
   <div id="notifications-overlay" class="overlay">
     <div class="modal-form">
-      <h2>Уведомления</h2>
+      <h2>Уведомления</h2><br>
       <ul id="notifications-list">
         <li>Уведомлений нет</li>
       </ul>
