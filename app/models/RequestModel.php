@@ -25,7 +25,7 @@ class RequestModel {
     public static function getAllRequests() {
         $db = self::getDB();
         $sql = "SELECT r.request_id, r.request_date, r.order_type,
-                       COALESCE(c.company_name, c.name) AS client_name
+                       COALESCE(NULLIF(c.company_name, ''), c.name) AS client_name
                 FROM requests r
                 JOIN clients c ON r.client_id = c.client_id
                 ORDER BY r.request_id";
