@@ -157,11 +157,11 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
           <td><?php echo htmlspecialchars($order['order_date']); ?></td>
           <td><?php echo htmlspecialchars($order['deadline']); ?></td>
           <td>
-            <select>
-              <option<?php if ($order['status'] === 'принят') echo ' selected'; ?>>Принят</option>
-              <option<?php if ($order['status'] === 'в работе') echo ' selected'; ?>>В работе</option>
-              <option<?php if ($order['status'] === 'на проверке') echo ' selected'; ?>>На проверке</option>
-              <option<?php if ($order['status'] === 'завершен') echo ' selected'; ?>>Завершен</option>
+            <select class="status-select" data-id="<?php echo $order['order_id']; ?>">
+              <option value="принят"<?php if ($order['status'] === 'принят') echo ' selected'; ?>>Принят</option>
+              <option value="в работе"<?php if ($order['status'] === 'в работе') echo ' selected'; ?>>В работе</option>
+              <option value="на проверке"<?php if ($order['status'] === 'на проверке') echo ' selected'; ?>>На проверке</option>
+              <option value="завершен"<?php if ($order['status'] === 'завершен') echo ' selected'; ?>>Завершен</option>
             </select>
           </td>
           <td>
@@ -294,6 +294,21 @@ newOrderBtn.addEventListener('click', () => {
 });
 newOrderOverlay.addEventListener('click', (e) => {
   if (e.target === newOrderOverlay) newOrderOverlay.style.display = 'none';
+});
+
+// изменение статуса заказа
+document.querySelectorAll('.status-select').forEach(sel => {
+  sel.addEventListener('change', () => {
+    const orderId = sel.dataset.id;
+    const status = sel.value;
+    fetch('index.php?action=update_status', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: new URLSearchParams({order_id: orderId, status: status})
+    }).then(r => r.text()).then(t => {
+      if (t.trim() !== 'ok') alert('Ошибка обновления статуса');
+    });
+  });
 });
 
 // сообщения об операциях

@@ -33,5 +33,26 @@ class OrderController
         header('Location: profile-employee.php?success=created');
         exit;
     }
+
+    public static function updateStatus()
+    {
+        session_start();
+        if (!isset($_SESSION['emp_id'])) {
+            header('Location: ../Program/auth.html');
+            exit;
+        }
+
+        $orderId = intval($_POST['order_id'] ?? 0);
+        $status = trim($_POST['status'] ?? '');
+        $allowed = ['принят', 'в работе', 'на проверке', 'завершен'];
+        if ($orderId <= 0 || !in_array($status, $allowed, true)) {
+            http_response_code(400);
+            echo 'invalid';
+            return;
+        }
+
+        OrderModel::updateStatus($orderId, $status);
+        echo 'ok';
+    }
 }
 ?>
