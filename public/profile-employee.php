@@ -114,23 +114,23 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
     <button id="new-order-btn" class="btn" style="margin-bottom:10px;">Новый заказ</button>
     <div id="new-order-overlay" class="overlay">
       <form id="new-order-form" class="modal-form" action="index.php?action=new_order" method="post">
-        <label for="new-client">Клиент:</label>
+        <p><strong>Сотрудник:</strong> <?php echo htmlspecialchars($displayName); ?></p><br>
+        <p><strong>Дата создания:</strong> <span id="new-order-date"></span></p><br>
+         <label for="new-client">Клиент:</label>
         <select id="new-client" name="client_id" required>
           <option value="" disabled selected>Выберите клиента</option>
           <?php foreach ($clients as $cl): ?>
             <option value="<?php echo $cl['client_id']; ?>"><?php echo htmlspecialchars($cl['display_name']); ?></option>
           <?php endforeach; ?>
-        </select>
+        </select><br><br>
         <label for="new-order-type">Тип работ:</label>
         <select id="new-order-type" name="order_type" required>
           <option>Экологический аудит</option>
           <option>Водный аудит</option>
           <option>Выбросы в атмосферу</option>
-        </select>
-        <p><strong>Сотрудник:</strong> <?php echo htmlspecialchars($displayName); ?></p><br>
-        <p><strong>Дата создания:</strong> <span id="new-order-date"></span></p><br>
+        </select><br><br>
         <label for="new-deadline">Дедлайн:</label>
-        <input type="date" id="new-deadline" name="deadline" required>
+        <input type="date" id="new-deadline" name="deadline" required><br><br>
         <button type="submit" class="btn">Создать заказ</button>
       </form>
     </div>
