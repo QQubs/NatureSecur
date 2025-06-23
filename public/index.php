@@ -22,6 +22,10 @@ switch ($action) {
         require_once __DIR__ . '/../app/controllers/RequestController.php';
         RequestController::createOrder();
         break;
+    case 'new_order':
+        require_once __DIR__ . '/../app/controllers/OrderController.php';
+        OrderController::create();
+        break;
     default:
         header('Location: ../Program/index.php');
         break;

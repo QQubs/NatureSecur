@@ -7,10 +7,12 @@ if (!isset($_SESSION['emp_id'])) {
 require_once __DIR__ . '/../app/models/EmployeeModel.php';
 require_once __DIR__ . '/../app/models/RequestModel.php';
 require_once __DIR__ . '/../app/models/OrderModel.php';
+require_once __DIR__ . '/../app/models/ClientModel.php';
 
 $employee = EmployeeModel::getEmployeeById($_SESSION['emp_id']);
 $requests = RequestModel::getAllRequests();
 $orders = OrderModel::getOrdersByEmployee($_SESSION['emp_id']);
+$clients = ClientModel::getAllClients();
 $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
 ?>
 <!DOCTYPE html>
@@ -107,8 +109,31 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
     </div>
   </section>
 
-  <section class="profile-section" id="orders" style="display:none;">
+<section class="profile-section" id="orders" style="display:none;">
     <h2>Заказы</h2>
+    <button id="new-order-btn" class="btn" style="margin-bottom:10px;">Новый заказ</button>
+    <div id="new-order-overlay" class="overlay">
+      <form id="new-order-form" class="modal-form" action="index.php?action=new_order" method="post">
+        <label for="new-client">Клиент:</label>
+        <select id="new-client" name="client_id" required>
+          <option value="" disabled selected>Выберите клиента</option>
+          <?php foreach ($clients as $cl): ?>
+            <option value="<?php echo $cl['client_id']; ?>"><?php echo htmlspecialchars($cl['display_name']); ?></option>
+          <?php endforeach; ?>
+        </select>
+        <label for="new-order-type">Тип работ:</label>
+        <select id="new-order-type" name="order_type" required>
+          <option>Экологический аудит</option>
+          <option>Водный аудит</option>
+          <option>Выбросы в атмосферу</option>
+        </select>
+        <p><strong>Сотрудник:</strong> <?php echo htmlspecialchars($displayName); ?></p><br>
+        <p><strong>Дата создания:</strong> <span id="new-order-date"></span></p><br>
+        <label for="new-deadline">Дедлайн:</label>
+        <input type="date" id="new-deadline" name="deadline" required>
+        <button type="submit" class="btn">Создать заказ</button>
+      </form>
+    </div>
     <div class="table-container">
     <table class="orders-table">
       <thead>
@@ -257,6 +282,18 @@ createButtons.forEach(btn => {
 });
 createOverlay.addEventListener('click', (e) => {
   if (e.target === createOverlay) createOverlay.style.display = 'none';
+});
+
+// создание нового заказа
+const newOrderBtn = document.getElementById('new-order-btn');
+const newOrderOverlay = document.getElementById('new-order-overlay');
+const newOrderDate = document.getElementById('new-order-date');
+newOrderBtn.addEventListener('click', () => {
+  newOrderDate.textContent = new Date().toISOString().slice(0, 10);
+  newOrderOverlay.style.display = 'flex';
+});
+newOrderOverlay.addEventListener('click', (e) => {
+  if (e.target === newOrderOverlay) newOrderOverlay.style.display = 'none';
 });
 
 // сообщения об операциях

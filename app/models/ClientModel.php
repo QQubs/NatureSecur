@@ -46,5 +46,11 @@ class ClientModel {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public static function getAllClients() {
+        $db = self::getDB();
+        $stmt = $db->query("SELECT client_id, COALESCE(NULLIF(company_name, ''), name) AS display_name FROM clients ORDER BY display_name");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
