@@ -27,7 +27,7 @@ $displayName = $client['name'] ?: $client['company_name'];
 </head>
 <body>
 <header>
-  <a href="../Program/index.html" class="logo">
+  <a href="../Program/index.php" class="logo">
     <img src="../Program/LogoF3.png" alt="NatureSecur logo">
   </a>
   <nav>

@@ -23,6 +23,6 @@ switch ($action) {
         RequestController::createOrder();
         break;
     default:
-        header('Location: ../Program/index.html');
+        header('Location: ../Program/index.php');
         break;
 }
