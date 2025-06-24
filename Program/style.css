@@ -356,3 +356,9 @@
   width: 24px;
   height: 24px;
 }
+
+/* filters */
+.filter-row select {
+  width: 100%;
+  padding: 2px;
+}
