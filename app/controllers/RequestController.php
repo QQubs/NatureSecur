@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/RequestModel.php';
+require_once __DIR__ . '/../models/ChangeLogModel.php';
 
 class RequestController
 {
@@ -87,6 +88,7 @@ class RequestController
         require_once __DIR__ . '/../models/OrderModel.php';
         $dl = $deadline !== '' ? $deadline : null;
         $orderId = OrderModel::createOrder($req['client_id'], $_SESSION['emp_id'], $req['order_type'], $dl);
+        ChangeLogModel::addLog($orderId, $_SESSION['emp_id'], 'создание', 'Создан заказ из заявки ' . $requestId);
 
         require_once __DIR__ . '/../models/ClientModel.php';
         $client = ClientModel::getClientById($req['client_id']);

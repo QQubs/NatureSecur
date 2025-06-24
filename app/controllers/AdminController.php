@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/EmployeeModel.php';
 require_once __DIR__ . '/../models/OrderModel.php';
+require_once __DIR__ . '/../models/ChangeLogModel.php';
 
 class AdminController
 {
@@ -68,10 +69,12 @@ class AdminController
         }
         if (isset($_POST['delete'])) {
             OrderModel::deleteOrder($id);
+            ChangeLogModel::addLog($id, $_SESSION['emp_id'], 'удаление', 'Заказ удален');
             header('Location: profile-admin.php?success=order_deleted');
             exit;
         }
         OrderModel::updateOrder($id, $clientId, $empId, $orderType, $deadline, $status);
+        ChangeLogModel::addLog($id, $_SESSION['emp_id'], 'изменение', 'Обновлены данные заказа');
         header('Location: profile-admin.php?success=order_updated');
         exit;
     }

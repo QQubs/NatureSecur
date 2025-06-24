@@ -22,5 +22,18 @@ class ChangeLogModel {
         $stmt = $db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public static function addLog($orderId, $empId, $actionType, $description, $oldValue = null, $newValue = null) {
+        $db = self::getDB();
+        $stmt = $db->prepare("INSERT INTO changelog (order_id, emp_id, action_type, description, old_value, new_value)
+                              VALUES (:order_id, :emp_id, :action_type, :description, :old_value, :new_value)");
+        $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
+        $stmt->bindParam(':emp_id', $empId, PDO::PARAM_INT);
+        $stmt->bindParam(':action_type', $actionType);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':old_value', $oldValue);
+        $stmt->bindParam(':new_value', $newValue);
+        $stmt->execute();
+    }
 }
 ?>

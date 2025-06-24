@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/OrderModel.php';
 require_once __DIR__ . '/../models/ClientModel.php';
+require_once __DIR__ . '/../models/ChangeLogModel.php';
 
 class OrderController
 {
@@ -22,6 +23,7 @@ class OrderController
 
         $dl = $deadline !== '' ? $deadline : null;
         $orderId = OrderModel::createOrder($clientId, $_SESSION['emp_id'], $orderType, $dl);
+        ChangeLogModel::addLog($orderId, $_SESSION['emp_id'], 'создание', 'Создан заказ');
 
         $client = ClientModel::getClientById($clientId);
         if ($client && !empty($client['email'])) {
@@ -51,11 +53,13 @@ class OrderController
             return;
         }
 
+        $oldStatus = OrderModel::getStatus($orderId);
         if (!OrderModel::updateStatus($orderId, $status)) {
             http_response_code(400);
             echo 'invalid';
             return;
         }
+        ChangeLogModel::addLog($orderId, $_SESSION['emp_id'], 'изменение статуса', 'Статус изменен', $oldStatus, $status);
 
         echo 'ok';
     }
@@ -104,6 +108,7 @@ class OrderController
         require_once __DIR__ . '/../models/ReportModel.php';
         $path = '../uploads/' . $filename;
         ReportModel::addReport($orderId, $_SESSION['emp_id'], $path);
+        ChangeLogModel::addLog($orderId, $_SESSION['emp_id'], 'отчет', 'Загружен отчет', null, $path);
 
         OrderModel::updateStatus($orderId, 'на проверке');
 
