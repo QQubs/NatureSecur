@@ -227,6 +227,74 @@ document.querySelectorAll('.send-message').forEach(btn => {
     textArea.value = '';
   });
 });
+
+// ---------- фильтры по заказам ----------
+function setupOrderFilters() {
+  const table = document.querySelector('.orders-table');
+  if (!table) return;
+  const headerRow = table.querySelector('thead tr');
+  const rows = Array.from(table.querySelectorAll('tbody tr'));
+  const filterRow = document.createElement('tr');
+  filterRow.className = 'filter-row';
+  const filterCount = headerRow.children.length - 1;
+  for (let i = 0; i < headerRow.children.length; i++) {
+    const th = document.createElement('th');
+    if (i >= filterCount) { filterRow.appendChild(th); continue; }
+    const select = document.createElement('select');
+    select.innerHTML = '<option value="">Все</option>';
+    const values = new Set();
+    rows.forEach(row => {
+      const cell = row.children[i];
+      let val = '';
+      if (!cell) return;
+      const sel = cell.querySelector('select');
+      if (sel) {
+        val = sel.value.trim();
+      } else if (cell.querySelector('a')) {
+        val = 'Есть';
+      } else {
+        val = cell.textContent.trim();
+        if (val === '—') val = 'Нет';
+      }
+      values.add(val);
+    });
+    Array.from(values).sort().forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v;
+      opt.textContent = v;
+      select.appendChild(opt);
+    });
+    select.addEventListener('change', applyFilters);
+    th.appendChild(select);
+    filterRow.appendChild(th);
+  }
+  table.querySelector('thead').appendChild(filterRow);
+
+  function applyFilters() {
+    rows.forEach(row => {
+      let show = true;
+      filterRow.querySelectorAll('select').forEach((sel, idx) => {
+        if (idx >= filterCount) return;
+        const val = sel.value;
+        if (!val) return;
+        const td = row.children[idx];
+        let cellVal = '';
+        const s = td.querySelector('select');
+        if (s) {
+          cellVal = s.value.trim();
+        } else if (td.querySelector('a')) {
+          cellVal = 'Есть';
+        } else {
+          cellVal = td.textContent.trim();
+          if (cellVal === '—') cellVal = 'Нет';
+        }
+        if (cellVal !== val) show = false;
+      });
+      row.style.display = show ? '' : 'none';
+    });
+  }
+}
+setupOrderFilters();
 // отображение сообщения об успешном запросе
 const params = new URLSearchParams(window.location.search);
 const msgBox = document.getElementById('message');
