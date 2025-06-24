@@ -30,6 +30,10 @@ switch ($action) {
         require_once __DIR__ . '/../app/controllers/OrderController.php';
         OrderController::updateStatus();
         break;
+    case 'add_report':
+        require_once __DIR__ . '/../app/controllers/OrderController.php';
+        OrderController::addReport();
+        break;
     default:
         header('Location: ../Program/index.php');
         break;
