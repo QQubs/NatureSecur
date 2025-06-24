@@ -79,6 +79,38 @@ class OrderModel {
         $stmt->execute();
         return true;
     }
+
+    public static function getAllOrders() {
+        $db = self::getDB();
+        $sql = "SELECT o.order_id, o.order_type, o.order_date, o.deadline, o.status, o.client_id, o.emp_id,
+                       COALESCE(NULLIF(c.company_name, ''), c.name) AS client_name,
+                       CONCAT(e.first_name, ' ', e.second_name) AS employee_name
+                FROM orders o
+                LEFT JOIN clients c ON o.client_id = c.client_id
+                LEFT JOIN employees e ON o.emp_id = e.emp_id
+                ORDER BY o.order_id";
+        $stmt = $db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function updateOrder($id, $clientId, $empId, $orderType, $deadline, $status) {
+        $db = self::getDB();
+        $stmt = $db->prepare("UPDATE orders SET client_id = :client_id, emp_id = :emp_id, order_type = :order_type, deadline = :deadline, status = :status WHERE order_id = :id");
+        $stmt->bindParam(':client_id', $clientId, PDO::PARAM_INT);
+        $stmt->bindParam(':emp_id', $empId, PDO::PARAM_INT);
+        $stmt->bindParam(':order_type', $orderType);
+        $stmt->bindParam(':deadline', $deadline);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public static function deleteOrder($id) {
+        $db = self::getDB();
+        $stmt = $db->prepare("DELETE FROM orders WHERE order_id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }
 ?>
 

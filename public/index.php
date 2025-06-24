@@ -34,6 +34,18 @@ switch ($action) {
         require_once __DIR__ . '/../app/controllers/OrderController.php';
         OrderController::addReport();
         break;
+    case 'add_employee':
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        AdminController::addEmployee();
+        break;
+    case 'update_employee':
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        AdminController::updateEmployee();
+        break;
+    case 'update_order':
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        AdminController::updateOrder();
+        break;
     default:
         header('Location: ../Program/index.php');
         break;
