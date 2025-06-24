@@ -201,51 +201,14 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
   </div>
 </main>
 <script>
-// открыть чат в отдельном окне
+// показать скрытую форму чата в строке заказа
 const toggles = document.querySelectorAll('.chat-toggle');
 toggles.forEach(btn => {
   btn.addEventListener('click', () => {
-    const row = btn.closest('.order-row');
-    const id = row.dataset.orderId || row.querySelector('td').textContent.trim();
-    const otherName = row.querySelector('td:nth-child(2)').textContent.trim();
-    openChatWindow(id, otherName);
+    const area = btn.nextElementSibling;
+    area.style.display = area.style.display === 'block' ? 'none' : 'block';
   });
 });
-
-function openChatWindow(id, otherName) {
-  const chatWin = window.open('', 'chat' + id, 'width=400,height=500');
-  if (!chatWin) return;
-  chatWin.document.write(`<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>Чат</title>
-    <style>body{font-family:Arial,sans-serif;margin:10px;} .messages{border:1px solid #ccc;height:350px;overflow-y:auto;padding:5px;margin-bottom:5px;} textarea{width:100%;box-sizing:border-box;}</style>
-  </head><body>
-    <h3>Чат с ${otherName}</h3>
-    <div class="messages"></div>
-    <textarea id="chat-text" maxlength="500" placeholder="Введите сообщение"></textarea>
-    <button id="send-btn">Отправить</button>
-  </body></html>`);
-  chatWin.document.close();
-
-  const msgBox = chatWin.document.querySelector('.messages');
-  const key = 'chat-' + id;
-  const messages = JSON.parse(localStorage.getItem(key) || '[]');
-  messages.forEach(m => {
-    const p = chatWin.document.createElement('p');
-    p.innerHTML = '<strong>' + m.sender + ':</strong> ' + m.text;
-    msgBox.appendChild(p);
-  });
-
-  chatWin.document.getElementById('send-btn').addEventListener('click', () => {
-    const textArea = chatWin.document.getElementById('chat-text');
-    const text = textArea.value.trim();
-    if (!text) return;
-    const p = chatWin.document.createElement('p');
-    p.innerHTML = '<strong>Я:</strong> ' + text;
-    msgBox.appendChild(p);
-    messages.push({sender: 'Я', text});
-    localStorage.setItem(key, JSON.stringify(messages));
-    textArea.value = '';
-  });
-}
 // ограничение размера файла
 const fileInputs = document.querySelectorAll('input[type="file"]');
 fileInputs.forEach(inp => {
