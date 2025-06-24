@@ -249,6 +249,19 @@
 .requests-table th, .orders-table th {
   background-color: #f2f2f2;
 }
+/* увеличенные отступы в таблице пользователей */
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.users-table th,
+.users-table td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+}
 .btn {
   background-color: #08641f;
   color: #fff;
@@ -364,10 +377,10 @@
 }
 
 .client-form {
-  margin-top: 10px;
+  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 15px;
 }
 .client-form input {
   padding: 6px;
