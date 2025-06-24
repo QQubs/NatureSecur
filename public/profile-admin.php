@@ -53,12 +53,12 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
     <h1>Личный кабинет администратора <br> Добро пожаловать, <span id="employee-name"><?php echo htmlspecialchars($displayName); ?></span></h1>
     <button id="notifications-btn" class="notify-btn"><img src="../Program/bell.svg" alt="Уведомления"></button>
   </div>
-  <nav class="profile-menu">
+  <nav id="main-menu" class="profile-menu">
     <button data-target="personal" class="profile-highlight active">Мой профиль</button>
     <button data-target="panel">Админ панель</button>
   </nav>
   <section class="profile-section" id="panel" style="display:none;">
-    <nav class="profile-menu">
+    <nav id="admin-menu" class="profile-menu">
       <button data-target="users" class="profile-highlight active">Пользователи</button>
       <button data-target="admin-orders">Заказы</button>
       <button data-target="changes">Журнал изменений</button>
@@ -90,10 +90,7 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
               <td><input name="phone"></td>
               <td><input name="login" required></td>
               <td>
-                <select name="role">
-                  <option value="сотрудник">Сотрудник</option>
-                  <option value="администратор">Администратор</option>
-                </select>
+                Сотрудник<input type="hidden" name="role" value="сотрудник">
               </td>
               <td><input name="password" type="password" required></td>
               <td><button class="btn" type="submit">Добавить</button></td>
@@ -124,6 +121,15 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
           <?php endforeach; ?>
         </tbody>
       </table>
+      <h3>Новый клиент</h3>
+      <form class="client-form" action="index.php?action=add_client" method="post">
+        <input name="name" placeholder="ФИО">
+        <input name="company_name" placeholder="Компания">
+        <input name="email" placeholder="Email" required>
+        <input name="phone" placeholder="Телефон">
+        <input name="password" type="password" placeholder="Пароль" required>
+        <button class="btn" type="submit">Добавить</button>
+      </form>
       </div>
     </section>
     <section class="profile-section" id="admin-orders" style="display:none;">
@@ -230,7 +236,7 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
 </main>
 <script>
 // переключение основного меню
-const mainButtons = document.querySelectorAll('nav.profile-menu > button');
+const mainButtons = document.querySelectorAll('#main-menu > button');
 const mainSections = document.querySelectorAll('main > .profile-section');
 mainButtons.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -243,10 +249,10 @@ mainButtons.forEach(btn => {
   });
 });
 // показать первый раздел
-document.querySelector('nav.profile-menu button.active').click();
+document.querySelector('#main-menu button.active').click();
 
 // меню админ-панели
-const adminButtons = document.querySelectorAll('#panel nav.profile-menu button');
+const adminButtons = document.querySelectorAll('#admin-menu button');
 const adminSections = document.querySelectorAll('#panel .profile-section');
 adminButtons.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -258,7 +264,7 @@ adminButtons.forEach(btn => {
     });
   });
 });
-document.querySelector('#panel nav.profile-menu button.active').click();
+document.querySelector('#admin-menu button.active').click();
 
 const notifBtn = document.getElementById('notifications-btn');
 const notifOverlay = document.getElementById('notifications-overlay');
