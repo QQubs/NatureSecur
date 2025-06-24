@@ -165,10 +165,14 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
             </select>
           </td>
           <td>
-            <label class="file-label">
-              Прикрепить отчет
-              <input type="file" accept="application/pdf">
-            </label>
+            <form class="upload-form" action="index.php?action=add_report" method="post" enctype="multipart/form-data" style="display:inline-block;">
+              <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
+              <label class="file-label">
+                Прикрепить отчет
+                <input type="file" name="report_file" accept="application/pdf" required>
+              </label>
+              <button type="submit" class="btn">Добавить отчёт</button>
+            </form>
             <button class="btn chat-toggle">Чат</button>
             <div class="chat-area" style="display:none;">
               <div class="messages"></div>
@@ -228,7 +232,7 @@ chatOverlay.addEventListener('click', (e) => {
   }
 });
 // ограничение размера файла
-const fileInputs = document.querySelectorAll('input[type="file"]');
+const fileInputs = document.querySelectorAll('.upload-form input[type="file"]');
 fileInputs.forEach(inp => {
   inp.addEventListener('change', (e) => {
     const file = e.target.files[0];
