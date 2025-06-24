@@ -199,15 +199,33 @@ $displayName = trim($employee['first_name'] . ' ' . $employee['second_name']);
       </ul>
     </div>
   </div>
+  <div id="chat-overlay" class="overlay">
+    <div id="chat-modal" class="modal-form"></div>
+  </div>
 </main>
 <script>
-// показать скрытую форму чата в строке заказа
+// модальное окно чата
 const toggles = document.querySelectorAll('.chat-toggle');
+const chatOverlay = document.getElementById('chat-overlay');
+const chatModal = document.getElementById('chat-modal');
+let activeChatArea = null;
+let activeChatParent = null;
 toggles.forEach(btn => {
   btn.addEventListener('click', () => {
-    const area = btn.nextElementSibling;
-    area.style.display = area.style.display === 'block' ? 'none' : 'block';
+    activeChatArea = btn.nextElementSibling;
+    activeChatParent = btn.parentNode;
+    activeChatArea.style.display = 'block';
+    chatModal.appendChild(activeChatArea);
+    chatOverlay.style.display = 'flex';
   });
+});
+
+chatOverlay.addEventListener('click', (e) => {
+  if (e.target === chatOverlay && activeChatArea) {
+    activeChatArea.style.display = 'none';
+    activeChatParent.appendChild(activeChatArea);
+    chatOverlay.style.display = 'none';
+  }
 });
 // ограничение размера файла
 const fileInputs = document.querySelectorAll('input[type="file"]');
@@ -250,6 +268,7 @@ notifOverlay.addEventListener('click', (e) => {
 document.querySelectorAll('.order-row').forEach(row => {
   const id = row.querySelector('td').textContent.trim();
   row.dataset.orderId = id;
+  row.querySelector('.chat-area').dataset.orderId = id;
   const key = 'chat-' + id;
   const messages = JSON.parse(localStorage.getItem(key) || '[]');
   const msgBox = row.querySelector('.messages');
@@ -267,8 +286,7 @@ document.querySelectorAll('.send-message').forEach(btn => {
     const textArea = area.querySelector('textarea');
     const text = textArea.value.trim();
     if (!text) return;
-    const row = btn.closest('.order-row');
-    const id = row.dataset.orderId;
+    const id = area.dataset.orderId;
     const p = document.createElement('p');
     p.innerHTML = '<strong>Я:</strong> ' + text;
     area.querySelector('.messages').appendChild(p);

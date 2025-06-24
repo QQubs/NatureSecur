@@ -328,6 +328,10 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
+.chat-modal {
+  max-width: 400px;
+}
+
 #employee-name{
   color: #059c42;
 }
