@@ -362,3 +362,16 @@
   width: 100%;
   padding: 2px;
 }
+
+.client-form {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.client-form input {
+  padding: 6px;
+}
+.profile-heading {
+  margin-bottom: 20px;
+}

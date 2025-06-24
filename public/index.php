@@ -34,6 +34,10 @@ switch ($action) {
         require_once __DIR__ . '/../app/controllers/OrderController.php';
         OrderController::addReport();
         break;
+    case 'add_client':
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        AdminController::addClient();
+        break;
     case 'add_employee':
         require_once __DIR__ . '/../app/controllers/AdminController.php';
         AdminController::addEmployee();

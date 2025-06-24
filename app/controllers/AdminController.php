@@ -14,9 +14,9 @@ class AdminController
         $login = trim($_POST['login'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $phone = trim($_POST['phone'] ?? '');
-        $role = trim($_POST['role'] ?? '');
+        $role = 'сотрудник';
         $password = $_POST['password'] ?? '';
-        if ($first === '' || $second === '' || $login === '' || $email === '' || $password === '' || ($role !== 'сотрудник' && $role !== 'администратор')) {
+        if ($first === '' || $second === '' || $login === '' || $email === '' || $password === '') {
             header('Location: profile-admin.php?error=invalid');
             exit;
         }
@@ -73,6 +73,26 @@ class AdminController
         }
         OrderModel::updateOrder($id, $clientId, $empId, $orderType, $deadline, $status);
         header('Location: profile-admin.php?success=order_updated');
+        exit;
+    }
+
+    public static function addClient()
+    {
+        session_start();
+        if (!self::checkRole()) return;
+
+        $name = trim($_POST['name'] ?? '');
+        $company = trim($_POST['company_name'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $phone = trim($_POST['phone'] ?? '');
+        $password = $_POST['password'] ?? '';
+        if ($email === '' || $password === '') {
+            header('Location: profile-admin.php?error=invalid');
+            exit;
+        }
+        require_once __DIR__ . '/../models/ClientModel.php';
+        ClientModel::createClient($name, $company, $email, $phone, $password);
+        header('Location: profile-admin.php?success=client_added');
         exit;
     }
 
